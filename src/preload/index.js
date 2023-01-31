@@ -1,15 +1,40 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-import carInfo from './car_info'
+export function baseCRUD(name) {
+  return {
+    getAll(params) {
+      return ipcRenderer.invoke(name, { type: 'getAll', params })
+    },
+    getOne(params) {
+      return ipcRenderer.invoke(name, { type: 'getOneById', params })
+    },
+    insert(params) {
+      return ipcRenderer.invoke(name, { type: 'insert', params })
+    },
+    update(params) {
+      return ipcRenderer.invoke(name, { type: 'update', params })
+    },
+    del(params) {
+      return ipcRenderer.invoke(name, { type: 'delById', params })
+    }
+  }
+}
 
+let maintain = {
+  ...baseCRUD('maintain'),
+  getAllByCarId(params) {
+    return ipcRenderer.invoke('maintain', { type: 'getAllByCarId', params })
+  }
+}
 const backup = () => {
   return ipcRenderer.invoke('backup')
 }
 
 // Custom APIs for renderer
 const api = {
-  carInfo,
+  carInfo: baseCRUD('car_info'),
+  maintain,
   backup
 }
 

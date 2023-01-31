@@ -4,14 +4,16 @@ export function createCarUsersTable() {
   return createTable(`
   CREATE TABLE IF NOT EXISTS car_infos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT COMMENT '车主名称',
-    phone TEXT COMMENT '电话号码',
-    address TEXT COMMENT '地址',
-    car_no TEXT COMMENT '车牌号码',
-    car_color TEXT COMMENT '车辆颜色',
-    remark TEXT COMMENT '备注',
-    create_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')),
-    update_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime'))
+    name TEXT, --车主名称
+    phone TEXT, --电话号码
+    address TEXT, --地址
+    car_no TEXT, --车牌号码
+    car_color TEXT, --车辆颜色
+    car_brand_type TEXT, --车辆品牌及型号
+    tyre_type TEXT, --轮胎型号
+    remark TEXT, --备注
+    create_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')), --创建时间
+    update_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')) -- 更新时间
   )
 `)
 }

@@ -1,6 +1,8 @@
 import { dialog } from 'electron'
 
 import db from './index'
+
+import { formatDate } from '../../utils'
 // 创建表
 export function createTable(sql) {
   try {
@@ -19,7 +21,7 @@ export function getAll(table) {
     let keys = Object.keys(others)
     keys.forEach((k) => {
       if (typeof others[k] == 'string') {
-        others[k] = `'%${params[k].split('').join('%')}%'`
+        others[k] = `'%${params[k]}%'`
       }
     })
     const whereStr = keys.length
@@ -34,7 +36,7 @@ export function getAll(table) {
     try {
       const result = db
         .prepare(
-          `select * from ${table} ${whereStr}order by create_time limit ${start}, ${pageSize}`
+          `select * from ${table} ${whereStr}order by create_time desc  limit ${start}, ${pageSize}`
         )
         .all()
       return result
@@ -109,8 +111,10 @@ export function getOneById(table) {
 
 export function updateOneById(table) {
   return (params = {}) => {
-    if (!params.id) throw '请传id参数'
-    let keys = Object.keys(params)
+    params = { ...params, update_time: formatDate() }
+    const { id, ...other } = params
+    if (!id) throw '请传id参数'
+    let keys = Object.keys({ ...other })
     try {
       const result = db
         .prepare(`update ${table} set ${keys.map((k) => `${k}=@${k}`)} where id=@id`)
@@ -128,6 +132,27 @@ export function delById(table) {
     if (!params.id) throw '请传id参数'
     try {
       const result = db.prepare(`delete from ${table} where id=@id`).run(params)
+      return result
+    } catch (error) {
+      console.error(error)
+      dialog.showErrorBox('系统错误', String(error))
+    }
+  }
+}
+
+export function getAllBy(table, key) {
+  return (params = {}) => {
+    const { current, pageSize = 10, ...others } = params
+    let limtPage = ''
+    let start = 0
+    if (current) {
+      start = (current - 1) * pageSize
+      return ` limit ${start}, ${pageSize}`
+    }
+    try {
+      const result = db
+        .prepare(`select * from ${table} where ${key}=@${key} order by create_time desc${limtPage}`)
+        .all(others)
       return result
     } catch (error) {
       console.error(error)

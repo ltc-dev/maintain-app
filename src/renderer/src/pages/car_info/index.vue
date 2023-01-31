@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <div v-if="route.query.id">
+    <div class="back-btn">
+      <a-button type="link" @click="goBack">
+        <template #icon><rollback-outlined /></template>
+        返回
+      </a-button>
+    </div>
+    <Detail></Detail>
+  </div>
+  <div v-else>
     <div class="search-info">
       <div class="search-item">
         <div class="label">车牌号：</div>
@@ -33,7 +42,10 @@
           <a-button type="primary" ghost :loading="loading" @click="reset">重置</a-button>
         </div>
         <div class="btn">
-          <a-button danger :loading="loading" @click="addClick">添加车辆信息</a-button>
+          <a-button danger :loading="loading" @click="() => editClick()">
+            <template #icon><plus-outlined /></template>
+            添加车辆信息</a-button
+          >
         </div>
       </div>
     </div>
@@ -48,17 +60,32 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key == 'action'">
           <a-button type="link" @click="editClick(record)">编辑</a-button>
+          <a-button type="link" @click="detailClick(record)">详情</a-button>
           <a-button type="link" danger @click="delClick(record)">删除</a-button>
         </template>
       </template>
     </a-table>
+    <edit-modal
+      :id="editM.id"
+      v-model:visible="editM.visible"
+      @success="editModalSuccess"
+      @cancel="() => (editM.id = '')"
+    ></edit-modal>
   </div>
 </template>
 <script setup>
-import { Modal } from 'ant-design-vue'
+import { Modal, message } from 'ant-design-vue'
+import editModal from './components/edit-modal.vue'
+import Detail from './detail.vue'
+const router = useRouter()
+const route = useRoute()
 const dataSource = ref([])
 const searchForm = ref({})
 const loading = ref(false)
+const editM = reactive({
+  visible: false,
+  id: 0
+})
 const pagination = reactive({
   current: 1,
   pageSize: 10,
@@ -66,7 +93,7 @@ const pagination = reactive({
   showSizeChanger: false
 })
 const columns = [
-  { title: '编号', dataIndex: 'id' },
+  { title: '编号', dataIndex: 'id', width: 60 },
   {
     title: '车主',
     dataIndex: 'name'
@@ -82,12 +109,12 @@ const columns = [
     minWidth: 132
   },
   {
-    title: '地址',
-    dataIndex: 'address'
+    title: '轮胎型号',
+    dataIndex: 'tyre_type'
   },
   {
-    title: '添加时间',
-    dataIndex: 'create_time',
+    title: '更新时间',
+    dataIndex: 'update_time',
     minWidth: 200
   },
   {
@@ -129,20 +156,43 @@ const pageChange = ({ current, pageSize }) => {
 
 const editClick = (row) => {
   console.log(row)
+  if (row && row.id) {
+    editM.id = row.id
+  } else {
+    editM.id = ''
+  }
+  editM.visible = true
 }
 
-const addClick = () => {}
+const editModalSuccess = () => {
+  editM.id = ''
+  search()
+}
 
 const delClick = (row) => {
   Modal.confirm({
     title: '确定要删除吗？',
     onOk: async () => {
-      const { code, data } = await window.api.carInfo.del({ id: row.id })
+      loading.value = true
+      const { code, data, msg } = await window.api.carInfo.del({ id: row.id })
+      loading.value = false
       if (code == 200) {
         console.log(data)
         getList()
+      } else {
+        message.error(msg)
       }
     }
+  })
+}
+const detailClick = (row) => {
+  router.replace({
+    query: { id: row.id }
+  })
+}
+const goBack = () => {
+  router.replace({
+    query: {}
   })
 }
 </script>

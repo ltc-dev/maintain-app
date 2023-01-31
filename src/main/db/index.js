@@ -9,7 +9,7 @@ import { createMaintainTable } from './maintain'
 
 function initDB() {
   try {
-    let filePath = join(app.getPath('userData'), './data/')
+    let filePath = join(app.getPath('userData'), './local_db/')
     if (!fs.existsSync(filePath)) {
       console.log(filePath)
       fs.mkdir(filePath, (err) => {
@@ -17,7 +17,7 @@ function initDB() {
       })
     }
 
-    const db = new Database(join(app.getPath('userData'), './data/database.db'), {
+    const db = new Database(join(filePath, './data.db'), {
       verbose: console.log
     })
     return db

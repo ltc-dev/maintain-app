@@ -42,6 +42,7 @@ export default () => {
         let srcDir = join(app.getPath('userData'), './data')
         let dirDate = formatDate(new Date(), 'YYYY_MM_DD')
         let destDir = join(result.filePaths[0], dirDate)
+        console.log(destDir)
         if (fs.existsSync(destDir)) {
           throw '文件已存在,请检查'
         } else {

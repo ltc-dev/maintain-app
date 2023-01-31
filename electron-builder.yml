@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: maintain-app
+productName: 维护保养助手
 directories:
   buildResources: build
 files:

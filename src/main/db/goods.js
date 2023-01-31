@@ -4,14 +4,14 @@ export function createGoodsTable() {
   return createTable(`
   CREATE TABLE IF NOT EXISTS goods(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT COMMENT '商品名称',
-    brand TEXT COMMENT '品牌',
-    merchant TEXT COMMENT '商家',
-    price REAL COMMENT '进价',
-    sell_price REAL COMMENT '售价',
-    remark TEXT COMMENT '备注',
-    create_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')),
-    update_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime'))
+    name TEXT, --商品名称
+    brand TEXT, --品牌
+    merchant TEXT, --商家
+    price REAL, --进价
+    sell_price REAL, --售价
+    remark TEXT, --备注
+    create_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')), --创建时间
+    update_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')) -- 更新时间
   )
 `)
 }
