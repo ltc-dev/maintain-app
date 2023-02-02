@@ -1,6 +1,6 @@
 <template>
   <div class="lock">
-    <div v-if="lock.locking" class="center-box">
+    <div class="center-box">
       <div class="row">
         <a-input-password
           v-model:value="password"
@@ -14,31 +14,25 @@
         </a-input-password>
       </div>
       <div class="row">
-        <a-button type="primary" block size="large" shape="round" @click="submit">确定</a-button>
+        <a-button type="primary" block size="large" :loading="loading" shape="round" @click="submit"
+          >确定</a-button
+        >
       </div>
     </div>
-    <a-spin v-else size="large" tip="加载中..."> </a-spin>
   </div>
 </template>
 <script setup>
 import { message } from 'ant-design-vue'
-import { getLocalItem, setLocalItem } from '../../../../utils/storage'
+import { getLocalItem } from '../../../../utils/storage'
 const password = ref('')
-const lock = getLocalItem('lock') || {}
+const loading = ref(false)
 const router = useRouter()
-console.log(lock)
-if (!lock.locking) {
-  router.push(lock.path || '/car_info')
-}
-console.log(lock)
-const submit = () => {
-  console.log(password, lock.password)
+const submit = async () => {
+  loading.value = true
+  const lock = await window.api.store({ type: 'get', key: 'lock' })
+  loading.value = false
   if (password.value == lock.password) {
-    setLocalItem('lock', {
-      ...lock,
-      locking: false
-    })
-    router.push(lock.path || '/car_info')
+    router.push(getLocalItem('lockPath') || '/car_info')
   } else {
     message.error('密码错误！请重新输入')
   }

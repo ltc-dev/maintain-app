@@ -59,7 +59,7 @@
 
 <script setup>
 import { message, Modal } from 'ant-design-vue'
-import { getLocalItem, setLocalItem } from '../../../../utils/storage'
+import { setLocalItem } from '../../../../utils/storage'
 
 const tabs = [
   { name: '车辆信息', path: '/car_info', id: 0 },
@@ -84,51 +84,45 @@ const activeTabChage = () => {
   })
 }
 activeTabChage()
-const lock = getLocalItem('lock') || {}
 
 const lockModal = reactive({
   visible: false,
-  ...lock
+  openLock: false,
+  password: ''
 })
+const getLock = async () => {
+  const lock = await window.api.store({ type: 'get', key: 'lock' })
+  lockModal.openLock = lock.openLock
+  lockModal.password = lock.password
+}
+getLock()
 
 const lockModalOk = () => {
-  const { openLock, password } = lockModal
-  if (openLock) {
-    if (!password) {
-      return message.error('请输入密码才能开启系统锁！！！')
-    } else {
-      setLocalItem('lock', {
-        openLock,
-        password,
-        locking: true
-      })
-
-      router.push('/lock')
-    }
+  const { openLock, password = '' } = lockModal
+  if (!password) {
+    return message.error('请输入密码才能开启系统锁！！！')
   } else {
-    setLocalItem('lock', {
-      openLock,
-      password: '',
-      locking: false
+    window.api.store({
+      type: 'set',
+      key: 'lock',
+      value: {
+        openLock,
+        password
+      }
     })
+    router.push('/lock')
   }
   lockModal.visible = false
 }
 
 const setModalClose = () => {
-  let l = getLocalItem('lock') || {}
-  lockModal.openLock = l.openLock
-  lockModal.password = l.password
+  getLock()
 }
 const setLock = () => {
   lockModal.visible = true
 }
 const lockClick = () => {
-  setLocalItem('lock', {
-    ...getLocalItem('lock'),
-    locking: true,
-    path: route.path
-  })
+  setLocalItem('lockPath', route.path)
   router.push('/lock')
 }
 const backupClick = async () => {
@@ -197,6 +191,7 @@ watch(() => route.path, activeTabChage)
   margin-bottom: 24px;
   .label {
     width: 100px;
+    flex-shrink: 0;
     text-align: right;
   }
 }

@@ -1,9 +1,11 @@
 import { BrowserWindow, Menu, shell } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
+import stroe from '../store'
 
 // import { getName, getMoble, getCarNo } from '../../utils/index'
-const hasPath = '#/lock'
+const lock = stroe.get('lock')
+let hasPath = lock.openLock ? '#/lock' : '#/car_info'
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -17,24 +19,6 @@ function createWindow() {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
-    }
-  })
-
-  // 是否加锁
-  win.webContents.executeJavaScript(`localStorage.getItem('lock')`, true).then((res) => {
-    if (res) {
-      try {
-        let lock = JSON.parse(res) || {}
-        if (lock.openLock) {
-          lock.locking = true
-          win.webContents.executeJavaScript(
-            `localStorage.setItem('lock','${JSON.stringify(lock)}')`,
-            true
-          )
-        }
-      } catch (error) {
-        console.error(error)
-      }
     }
   })
   win.on('ready-to-show', async () => {

@@ -44,13 +44,17 @@ let goods = {
 const backup = () => {
   return ipcRenderer.invoke('backup')
 }
+const store = (params) => {
+  return ipcRenderer.invoke('store', params)
+}
 
 // Custom APIs for renderer
 const api = {
   carInfo,
   maintain,
   goods,
-  backup
+  backup,
+  store
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
