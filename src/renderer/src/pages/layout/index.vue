@@ -72,7 +72,6 @@ const activeTab = ref(0)
 const backupLoading = ref(false)
 
 const tabChange = (tab) => {
-  activeTab.value = tab.id
   router.push(tab.path)
 }
 
