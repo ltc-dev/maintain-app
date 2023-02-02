@@ -1,6 +1,8 @@
+import { dialog } from 'electron'
+
+import db from './index'
 import {
   createTable,
-  getAll,
   insert,
   getTotal,
   getOneById,
@@ -8,6 +10,7 @@ import {
   delById,
   getAllBy
 } from './utils'
+
 // 创建车辆信息表
 export function createMaintainTable() {
   return createTable(`
@@ -26,7 +29,59 @@ export function createMaintainTable() {
 `)
 }
 
-export const getMaintainList = getAll('maintain')
+export const getMaintainList = (params = {}) => {
+  let query = (params = {}, c = '*') => {
+    const { current = 1, pageSize = 10, car_no, startTime, endTime, ...others } = params
+    if (car_no) {
+      others['c.car_no'] = car_no
+    }
+    let keys = Object.keys(others)
+    keys.forEach((k) => {
+      if (typeof others[k] == 'string') {
+        others[k] = `'%${others[k]}%'`
+      }
+    })
+    let whereStr = keys.length
+      ? `where${keys
+          .map((k) => {
+            return ` ${k} like ${others[k]} `
+          })
+          .join('and')} `
+      : ''
+    console.log(whereStr)
+    if (startTime && endTime) {
+      if (whereStr) {
+        whereStr = whereStr + `and m.create_time BETWEEN '${startTime}' AND '${endTime}' `
+      } else {
+        whereStr = `where m.create_time BETWEEN '${startTime}' AND '${endTime}' `
+      }
+    }
+    console.log(whereStr)
+    const start = (current - 1) * pageSize
+    try {
+      if (c === '*') {
+        return db
+          .prepare(
+            `select c.car_no,m.* from maintain m LEFT JOIN car_infos c ON m.car_id=c.id ${whereStr}order by m.create_time desc  limit ${start}, ${pageSize}`
+          )
+          .all()
+      } else {
+        return db
+          .prepare(
+            `select ${c} from maintain m LEFT JOIN car_infos c ON m.car_id=c.id ${whereStr}order by m.create_time desc `
+          )
+          .get()
+      }
+    } catch (error) {
+      console.error(error)
+      dialog.showErrorBox('系统错误', String(error))
+    }
+  }
+  return {
+    list: query(params),
+    ...query(params, 'count(*) as total')
+  }
+}
 
 export const getListByCarId = getAllBy('maintain', 'car_id')
 

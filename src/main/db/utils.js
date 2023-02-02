@@ -2,7 +2,7 @@ import { dialog } from 'electron'
 
 import db from './index'
 
-import { formatDate } from '../../utils'
+import moment from 'moment'
 // 创建表
 export function createTable(sql) {
   try {
@@ -15,13 +15,12 @@ export function createTable(sql) {
 
 // 获取多行数据
 export function getAll(table) {
-  return (params = {}) => {
-    console.log(222, params)
+  let query = (params = {}, c = '*') => {
     const { current = 1, pageSize = 10, ...others } = params
     let keys = Object.keys(others)
     keys.forEach((k) => {
       if (typeof others[k] == 'string') {
-        others[k] = `'%${params[k]}%'`
+        others[k] = `'%${others[k]}%'`
       }
     })
     const whereStr = keys.length
@@ -32,19 +31,25 @@ export function getAll(table) {
           .join('and')} `
       : ''
     const start = (current - 1) * pageSize
-    // return `select * from car_users ${whereStr}order by create_time limit ${start}, ${pageSize}`
     try {
-      const result = db
-        .prepare(
-          `select * from ${table} ${whereStr}order by create_time desc  limit ${start}, ${pageSize}`
-        )
-        .all()
-      return result
+      if (c === '*') {
+        return db
+          .prepare(
+            `select ${c} from ${table} ${whereStr}order by create_time desc  limit ${start}, ${pageSize}`
+          )
+          .all()
+      } else {
+        return db.prepare(`select ${c} from ${table} ${whereStr}order by create_time desc`).get()
+      }
     } catch (error) {
       console.error(error)
       dialog.showErrorBox('系统错误', String(error))
     }
   }
+  return (params = {}) => ({
+    list: query(params),
+    ...query(params, 'count(*) as total')
+  })
 }
 
 // 插入数据
@@ -111,7 +116,7 @@ export function getOneById(table) {
 
 export function updateOneById(table) {
   return (params = {}) => {
-    params = { ...params, update_time: formatDate() }
+    params = { ...params, update_time: moment().format('YYYY-MM-DD HH:mm:ss') }
     const { id, ...other } = params
     if (!id) throw '请传id参数'
     let keys = Object.keys({ ...other })

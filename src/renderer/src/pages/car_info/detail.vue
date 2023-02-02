@@ -30,30 +30,40 @@
       </a-spin>
     </div>
     <div class="maintain-box">
-      <div class="maintain-top">
-        <div class="title"><insurance-two-tone :style="{ marginRight: '8px' }" />保养记录</div>
-        <div class="top-btns">
-          <a-button type="primary" @click="eidtMaintainClick"
+      <a-tabs v-model:activeKey="activeKey">
+        <a-tab-pane :key="1">
+          <template #tab>
+            <span>
+              <insurance-two-tone></insurance-two-tone>
+              保养记录
+            </span>
+          </template>
+          <a-table
+            :columns="columns"
+            :data-source="dataSource"
+            :pagination="pagination"
+            :loading="loading"
+            size="small"
+            :scroll="{ x: 800 }"
+            @change="pageChange"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key == 'action'">
+                <a-button type="link" @click="eidtMaintainClick(record)">编辑</a-button>
+                <a-button type="link" danger @click="delClick(record)">删除</a-button>
+              </template>
+            </template>
+          </a-table>
+        </a-tab-pane>
+        <a-tab-pane :key="2" tab="商品记录">
+          <GoodsList :car-id="id"></GoodsList>
+        </a-tab-pane>
+        <template #rightExtra>
+          <a-button v-if="activeKey == 1" type="primary" @click="eidtMaintainClick"
             ><template #icon><plus-outlined /></template>添加保养记录</a-button
           >
-        </div>
-      </div>
-      <a-table
-        :columns="columns"
-        :data-source="dataSource"
-        :pagination="pagination"
-        :loading="loading"
-        size="small"
-        :scroll="{ x: 800 }"
-        @change="pageChange"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key == 'action'">
-            <a-button type="link" @click="eidtMaintainClick(record)">编辑</a-button>
-            <a-button type="link" danger @click="delClick(record)">删除</a-button>
-          </template>
         </template>
-      </a-table>
+      </a-tabs>
     </div>
     <edit-modal
       :id="editM.id"
@@ -68,12 +78,14 @@
 <script setup>
 import { Modal, message } from 'ant-design-vue'
 import editModal from '../maintain/components/edit-modal.vue'
+import GoodsList from './components/goods-list.vue'
 
 const route = useRoute()
 const id = route.query.id
 const loading = ref(false)
 const baseInfoLoading = ref(false)
 const baseInfo = ref({})
+const activeKey = ref(1)
 const getDetail = async () => {
   baseInfoLoading.value = true
   const { code, data, msg } = await window.api.carInfo.getOne({
@@ -148,15 +160,11 @@ const getList = async () => {
   loading.value = false
   if (code == 200) {
     console.log(data)
-    dataSource.value = data.list || []
+    dataSource.value = data || []
     pagination.total = dataSource.value.length
   }
 }
 
-const search = () => {
-  pagination.current = 1
-  getList()
-}
 getList()
 const pageChange = ({ current }) => {
   pagination.current = current
@@ -173,7 +181,7 @@ const eidtMaintainClick = (row) => {
 
 const editModalSuccess = () => {
   editM.id = ''
-  search()
+  getList()
 }
 
 const delClick = (row) => {
@@ -205,7 +213,7 @@ const delClick = (row) => {
     margin-bottom: 12px;
   }
   .maintain-box {
-    padding: 6px;
+    padding: 0 20px;
     .maintain-top {
       display: flex;
       justify-content: space-between;

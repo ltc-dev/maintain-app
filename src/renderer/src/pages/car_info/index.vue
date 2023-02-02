@@ -186,14 +186,12 @@ const delClick = (row) => {
   })
 }
 const detailClick = (row) => {
-  router.replace({
+  router.push({
     query: { id: row.id }
   })
 }
 const goBack = () => {
-  router.replace({
-    query: {}
-  })
+  router.back()
 }
 </script>
 

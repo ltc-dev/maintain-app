@@ -59,6 +59,7 @@
   </a-modal>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 const props = defineProps({
   visible: Boolean,
@@ -75,7 +76,8 @@ const editFrom = ref({
   remark: ''
 })
 const emit = defineEmits(['update:visible', 'success', 'cancel'])
-const formRef = ref()
+const formRef = ref({})
+const loading = ref(false)
 
 const modalTitle = computed(() => `${props.id ? '编辑' : '添加'} 车辆信息`)
 const getDetail = async () => {
@@ -120,6 +122,10 @@ const editAction = async (values) => {
   }
 }
 const addAction = async (values) => {
+  let e = await hasCarInfo(values.car_no)
+  if (e) {
+    return message.error(e)
+  }
   loading.value = true
   const { code, msg } = await window.api.carInfo.insert({ ...values })
   loading.value = false
@@ -134,7 +140,21 @@ const handleCancel = () => {
   emit('update:visible', false)
 }
 const afterClose = () => {
+  loading.value = false
   emit('cancel')
   formRef.value.resetFields()
+}
+
+const hasCarInfo = async (carNo) => {
+  loading.value = true
+  const { code, data = [] } = await window.api.carInfo.getByCarno({ car_no: carNo })
+  loading.value = false
+  if (code == 200) {
+    if (data.length) {
+      return '车辆信息已存在'
+    }
+  } else {
+    return '系统错误，请稍后再试'
+  }
 }
 </script>

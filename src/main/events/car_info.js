@@ -1,11 +1,11 @@
 import { ipcMain } from 'electron'
 import {
   getCarInfoList,
-  carInfoGetTotal,
   carInfoInsert,
   carInfoDel,
   carInfoUpdate,
-  carInfoGetOne
+  carInfoGetOne,
+  getByCarno
 } from '../db/car_info'
 
 export default () => {
@@ -20,10 +20,7 @@ export default () => {
       switch (type) {
         case 'getAll':
           {
-            result.data = {
-              list: getCarInfoList(params),
-              ...carInfoGetTotal(params)
-            }
+            result.data = getCarInfoList(params)
           }
           break
         case 'getOneById':
@@ -44,6 +41,11 @@ export default () => {
         case 'delById':
           {
             result.data = carInfoDel(params)
+          }
+          break
+        case 'getByCarno':
+          {
+            result.data = getByCarno(params)
           }
           break
 

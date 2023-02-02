@@ -1,4 +1,13 @@
-import { createTable, getAll, insert, getTotal, getOneById, updateOneById, delById } from './utils'
+import {
+  createTable,
+  getAll,
+  insert,
+  getTotal,
+  getOneById,
+  updateOneById,
+  delById,
+  getAllBy
+} from './utils'
 // 创建车辆信息表
 export function createCarUsersTable() {
   return createTable(`
@@ -29,3 +38,5 @@ export const carInfoGetOne = getOneById('car_infos')
 export const carInfoUpdate = updateOneById('car_infos')
 
 export const carInfoDel = delById('car_infos')
+
+export const getByCarno = getAllBy('car_infos', 'car_no')

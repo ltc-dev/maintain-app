@@ -27,7 +27,12 @@
     <div class="container">
       <router-view></router-view>
     </div>
-    <a-modal v-model:visible="lockModal.visible" title="设置" @ok="lockModalOk">
+    <a-modal
+      v-model:visible="lockModal.visible"
+      title="设置"
+      :after-close="setModalClose"
+      @ok="lockModalOk"
+    >
       <div class="modal-row">
         <div class="label">系统锁：</div>
         <a-switch
@@ -66,17 +71,20 @@ const route = useRoute()
 const activeTab = ref(0)
 const backupLoading = ref(false)
 
-tabs.some((tab) => {
-  if (tab.path == route.path) {
-    activeTab.value = tab.id
-    return true
-  }
-})
-
 const tabChange = (tab) => {
   activeTab.value = tab.id
   router.push(tab.path)
 }
+
+const activeTabChage = () => {
+  tabs.some((tab) => {
+    if (tab.path == route.path) {
+      activeTab.value = tab.id
+      return true
+    }
+  })
+}
+activeTabChage()
 const lock = getLocalItem('lock') || {}
 
 const lockModal = reactive({
@@ -107,6 +115,12 @@ const lockModalOk = () => {
   }
   lockModal.visible = false
 }
+
+const setModalClose = () => {
+  let l = getLocalItem('lock') || {}
+  lockModal.openLock = l.openLock
+  lockModal.password = l.password
+}
 const setLock = () => {
   lockModal.visible = true
 }
@@ -128,6 +142,7 @@ const backupClick = async () => {
     })
   }
 }
+watch(() => route.path, activeTabChage)
 </script>
 
 <style lang="less" scoped>

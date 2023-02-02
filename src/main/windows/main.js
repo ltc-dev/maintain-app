@@ -55,6 +55,14 @@ function createWindow() {
         {
           label: '刷新页面',
           role: 'reload'
+        },
+        {
+          label: '复制',
+          role: 'copy'
+        },
+        {
+          label: '粘贴',
+          role: 'paste'
         }
       ]
     }

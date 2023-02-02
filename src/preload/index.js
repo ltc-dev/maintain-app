@@ -27,14 +27,29 @@ let maintain = {
     return ipcRenderer.invoke('maintain', { type: 'getAllByCarId', params })
   }
 }
+
+let carInfo = {
+  ...baseCRUD('car_info'),
+  getByCarno(params) {
+    return ipcRenderer.invoke('car_info', { type: 'getByCarno', params })
+  }
+}
+
+let goods = {
+  ...baseCRUD('goods'),
+  getAllByCarId(params) {
+    return ipcRenderer.invoke('goods', { type: 'getAllByCarId', params })
+  }
+}
 const backup = () => {
   return ipcRenderer.invoke('backup')
 }
 
 // Custom APIs for renderer
 const api = {
-  carInfo: baseCRUD('car_info'),
+  carInfo,
   maintain,
+  goods,
   backup
 }
 

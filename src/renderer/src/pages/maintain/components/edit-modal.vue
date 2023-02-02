@@ -64,7 +64,7 @@ const editFrom = ref({
   remark: '',
   car_id: props.carId
 })
-const emit = defineEmits(['update:visible', 'success'])
+const emit = defineEmits(['update:visible', 'success', 'cancel'])
 const formRef = ref()
 const loading = ref(false)
 
