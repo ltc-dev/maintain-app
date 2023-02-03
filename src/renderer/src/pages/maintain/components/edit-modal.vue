@@ -12,29 +12,29 @@
       <a-row :gutter="24">
         <a-col :span="12">
           <a-form-item label="当前里程" name="mileage_now">
-            <a-input v-model:value.trim="editFrom.mileage_now" />
+            <a-input v-model:value.trim="editFrom.mileage_now" placeholder="请输入当前里程" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="下次里程" name="mileage_next">
-            <a-input v-model:value.trim="editFrom.mileage_next" />
+            <a-input v-model:value.trim="editFrom.mileage_next" placeholder="请输入下次里程" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="机油类型" name="oil_type">
-            <a-input v-model:value.trim="editFrom.oil_type" />
+            <a-input v-model:value.trim="editFrom.oil_type" placeholder="请输入机油类型" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="赠送滤芯" name="give_filter">
-            <a-select v-model:value="editFrom.give_filter">
+            <a-select v-model:value="editFrom.give_filter" placeholder="请选择">
               <a-select-option :value="0">否</a-select-option>
               <a-select-option :value="1">是</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="价格" name="price">
+          <a-form-item label="价格" name="price" placeholder="请输入价格">
             <a-input v-model:value.trim="editFrom.price" />
           </a-form-item>
         </a-col>
@@ -50,7 +50,7 @@
         </a-col>
         <a-col :span="24">
           <a-form-item label="备注" name="remark" :label-col="{ span: 3 }">
-            <a-textarea v-model:value.trim="editFrom.remark" />
+            <a-textarea v-model:value.trim="editFrom.remark" placeholder="请输入备注信息" />
           </a-form-item>
         </a-col>
       </a-row>

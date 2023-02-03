@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="商品型号" name="type">
-            <a-input v-model:value.trim="editFrom.type" placeholder="请输入商品名称" />
+            <a-input v-model:value.trim="editFrom.type" placeholder="请输入商品型号" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -43,7 +43,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="供货商" name="merchant">
-            <a-input v-model:value.trim="editFrom.merchant" placeholder="请输入商品名称" />
+            <a-input v-model:value.trim="editFrom.merchant" placeholder="请输入供货商名称" />
           </a-form-item>
         </a-col>
         <a-col :span="12">

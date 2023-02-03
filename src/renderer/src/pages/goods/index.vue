@@ -19,7 +19,11 @@
       </div>
       <div class="search-item">
         <div class="label">时间范围：</div>
-        <a-range-picker v-model:value="dateRange" value-format="YYYY-MM-DD" />
+        <a-range-picker
+          v-model:value="dateRange"
+          value-format="YYYY-MM-DD"
+          placeholder="请选择时间范围"
+        />
       </div>
       <div class="search-item">
         <div class="btn">
