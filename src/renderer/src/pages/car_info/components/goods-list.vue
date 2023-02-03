@@ -59,11 +59,11 @@ const columns = [
   },
   {
     title: '供货商',
-    dataIndex: 'price'
+    dataIndex: 'merchant'
   },
   {
     title: '备注',
-    dataIndex: 'merchant'
+    dataIndex: 'remark'
   },
   {
     title: '操作',

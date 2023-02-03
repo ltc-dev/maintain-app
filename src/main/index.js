@@ -1,7 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 
-import createWindow from './windows/main'
+import createMainWindow from './windows/main'
+import createLoadingWindow from './windows/loading'
 
 import db, { initTable } from './db'
 
@@ -21,10 +22,10 @@ app.whenReady().then(() => {
   // insertData()
 
   setupEvents()
-  createWindow()
+  const loading = createLoadingWindow(() => createMainWindow(loading))
 
   app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
   })
 })
 

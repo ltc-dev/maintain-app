@@ -6,7 +6,7 @@ import stroe from '../store'
 // import { getName, getMoble, getCarNo } from '../../utils/index'
 const lock = stroe.get('lock')
 let hashPath = lock.openLock ? '/lock' : '/car_info'
-function createWindow() {
+function createWindow(loading) {
   // Create the browser window.
   const win = new BrowserWindow({
     // width: 500,
@@ -22,6 +22,10 @@ function createWindow() {
     }
   })
   win.on('ready-to-show', async () => {
+    if (loading) {
+      loading.hide()
+      loading.close()
+    }
     win.show()
   })
   const menu = Menu.buildFromTemplate([
