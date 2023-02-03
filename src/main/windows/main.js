@@ -1,11 +1,11 @@
-import { BrowserWindow, Menu, shell } from 'electron'
+import { BrowserWindow, dialog, Menu, shell } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import stroe from '../store'
 
 // import { getName, getMoble, getCarNo } from '../../utils/index'
 const lock = stroe.get('lock')
-let hashPath = lock.openLock ? 'lock' : 'car_info'
+let hashPath = lock.openLock ? '/lock' : '/car_info'
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -56,13 +56,16 @@ function createWindow() {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
-
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    win.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#/${hashPath}`)
-  } else {
-    win.loadURL(`file://${join(__dirname, `../renderer/index.html${hashPath}`)}`, {
-      hash: hashPath
-    })
+  try {
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+      win.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#${hashPath}`)
+    } else {
+      win.loadFile(join(__dirname, '../renderer/index.html'), {
+        hash: hashPath
+      })
+    }
+  } catch (error) {
+    dialog.showErrorBox('error', String(error))
   }
   return win
 }
