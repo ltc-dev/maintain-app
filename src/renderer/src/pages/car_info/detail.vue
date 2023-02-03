@@ -34,7 +34,11 @@
         <a-tab-pane :key="1">
           <template #tab>
             <span>
-              <insurance-two-tone></insurance-two-tone>
+              <insurance-two-tone
+                :style="{
+                  'margin-right': 0
+                }"
+              ></insurance-two-tone>
               保养记录
             </span>
           </template>
@@ -55,7 +59,17 @@
             </template>
           </a-table>
         </a-tab-pane>
-        <a-tab-pane :key="2" tab="商品记录">
+        <a-tab-pane :key="2">
+          <template #tab>
+            <span>
+              <profile-two-tone
+                :style="{
+                  'margin-right': 0
+                }"
+              />
+              商品记录
+            </span>
+          </template>
           <GoodsList :car-id="id"></GoodsList>
         </a-tab-pane>
         <template #rightExtra>
