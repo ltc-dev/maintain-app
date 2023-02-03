@@ -12,17 +12,17 @@
       <a-row :gutter="24">
         <a-col :span="12">
           <a-form-item label="当前里程" name="mileage_now">
-            <a-input v-model:value="editFrom.mileage_now" />
+            <a-input v-model:value.trim="editFrom.mileage_now" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="下次里程" name="mileage_next">
-            <a-input v-model:value="editFrom.mileage_next" />
+            <a-input v-model:value.trim="editFrom.mileage_next" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="机油类型" name="oil_type">
-            <a-input v-model:value="editFrom.oil_type" />
+            <a-input v-model:value.trim="editFrom.oil_type" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -35,12 +35,22 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="价格" name="price">
-            <a-input v-model:value="editFrom.price" />
+            <a-input v-model:value.trim="editFrom.price" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="保养时间" name="time">
+            <a-date-picker
+              v-model:value="editFrom.time"
+              show-time
+              value-format="YYYY-MM-DD HH:mm:ss"
+              placeholder="请选择保养时间"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="备注" name="remark" :label-col="{ span: 3 }">
-            <a-textarea v-model:value="editFrom.remark" />
+            <a-textarea v-model:value.trim="editFrom.remark" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -49,6 +59,7 @@
 </template>
 <script setup>
 import { message } from 'ant-design-vue'
+import moment from 'moment'
 const props = defineProps({
   visible: Boolean,
   id: [Number, String],
@@ -62,6 +73,7 @@ const editFrom = ref({
   give_filter: 0,
   price: '',
   remark: '',
+  time: moment().format('YYYY-MM-DD HH:mm:ss'),
   car_id: props.carId
 })
 const emit = defineEmits(['update:visible', 'success', 'cancel'])

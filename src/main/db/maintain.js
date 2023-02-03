@@ -23,6 +23,7 @@ export function createMaintainTable() {
     price REAL, --价格
     give_filter INTEGER DEFAULT 0, --赠送滤芯：0否，1是
     remark TEXT, --备注
+    time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')), --保养时间
     create_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')), --创建时间
     update_time TIMESTAMP DEFAULT (DATETIME('now', 'localtime')) -- 更新时间
   )
@@ -51,9 +52,9 @@ export const getMaintainList = (params = {}) => {
     console.log(whereStr)
     if (startTime && endTime) {
       if (whereStr) {
-        whereStr = whereStr + `and m.create_time BETWEEN '${startTime}' AND '${endTime}' `
+        whereStr = whereStr + `and m.time BETWEEN '${startTime}' AND '${endTime}' `
       } else {
-        whereStr = `where m.create_time BETWEEN '${startTime}' AND '${endTime}' `
+        whereStr = `where m.time BETWEEN '${startTime}' AND '${endTime}' `
       }
     }
     console.log(whereStr)

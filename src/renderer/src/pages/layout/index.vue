@@ -44,7 +44,7 @@
       <div v-if="lockModal.openLock" class="modal-row">
         <div class="label">密码：</div>
         <a-input-password
-          v-model:value="lockModal.password"
+          v-model:value.trim="lockModal.password"
           size="large"
           placeholder="请输入密码"
         />

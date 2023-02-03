@@ -13,6 +13,7 @@ export function baseCRUD(name) {
       return ipcRenderer.invoke(name, { type: 'insert', params })
     },
     update(params) {
+      console.log(params)
       return ipcRenderer.invoke(name, { type: 'update', params })
     },
     del(params) {

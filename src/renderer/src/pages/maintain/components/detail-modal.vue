@@ -18,7 +18,7 @@
         </a-button>
         <span v-else>--</span>
       </a-descriptions-item>
-      <a-descriptions-item label="保养时间">{{ editFrom.create_time || '--' }}</a-descriptions-item>
+      <a-descriptions-item label="保养时间">{{ editFrom.time || '--' }}</a-descriptions-item>
       <a-descriptions-item label="机油类型">{{ editFrom.oil_type || '--' }}</a-descriptions-item>
       <a-descriptions-item label="赠送滤芯">{{
         isGive[editFrom.give_filter] || '--'

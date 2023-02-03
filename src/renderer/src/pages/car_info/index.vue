@@ -13,26 +13,34 @@
       <div class="search-item">
         <div class="label">车牌号：</div>
         <a-input
-          v-model:value="searchForm.car_no"
+          v-model:value.trim="searchForm.car_no"
           allow-clear
           placeholder="请输入车牌号码"
         ></a-input>
       </div>
       <div class="search-item">
         <div class="label">车主：</div>
-        <a-input v-model:value="searchForm.name" allow-clear placeholder="请输入车主名称"></a-input>
+        <a-input
+          v-model:value.trim="searchForm.name"
+          allow-clear
+          placeholder="请输入车主名称"
+        ></a-input>
       </div>
       <div class="search-item">
         <div class="label">电话号码：</div>
         <a-input
-          v-model:value="searchForm.phone"
+          v-model:value.trim="searchForm.phone"
           allow-clear
           placeholder="请输入电话号码"
         ></a-input>
       </div>
       <div class="search-item">
         <div class="label">地址：</div>
-        <a-input v-model:value="searchForm.address" allow-clear placeholder="请输入地址"></a-input>
+        <a-input
+          v-model:value.trim="searchForm.address"
+          allow-clear
+          placeholder="请输入地址"
+        ></a-input>
       </div>
       <div class="search-item">
         <div class="btn">
@@ -101,6 +109,11 @@ const columns = [
   {
     title: '车牌号',
     dataIndex: 'car_no',
+    minWidth: 120
+  },
+  {
+    title: '车辆型号',
+    dataIndex: 'car_brand_type',
     minWidth: 120
   },
   {

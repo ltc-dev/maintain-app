@@ -3,7 +3,7 @@
     <div class="center-box">
       <div class="row">
         <a-input-password
-          v-model:value="password"
+          v-model:value.trim="password"
           size="large"
           placeholder="请输入密码"
           @pressEnter="submit"

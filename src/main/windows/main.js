@@ -5,7 +5,7 @@ import stroe from '../store'
 
 // import { getName, getMoble, getCarNo } from '../../utils/index'
 const lock = stroe.get('lock')
-let hasPath = lock.openLock ? '#/lock' : '#/car_info'
+let hashPath = lock.openLock ? 'lock' : 'car_info'
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -58,9 +58,11 @@ function createWindow() {
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    win.loadURL(`${process.env['ELECTRON_RENDERER_URL']}${hasPath}`)
+    win.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#/${hashPath}`)
   } else {
-    win.loadURL(`file://${join(__dirname, `../renderer/index.html${hasPath}`)}`)
+    win.loadURL(`file://${join(__dirname, `../renderer/index.html${hashPath}`)}`, {
+      hash: hashPath
+    })
   }
   return win
 }

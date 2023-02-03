@@ -18,7 +18,7 @@
         ></a-input>
       </div>
       <div class="search-item">
-        <div class="label">时间范围：</div>
+        <div class="label">保养时间：</div>
         <a-range-picker v-model:value="dateRange" value-format="YYYY-MM-DD" />
       </div>
       <div class="search-item">
@@ -80,8 +80,8 @@ const columns = [
     minWidth: 120
   },
   {
-    title: '创建时间',
-    dataIndex: 'create_time',
+    title: '保养时间',
+    dataIndex: 'time',
     minWidth: 200
   },
   {

@@ -18,23 +18,24 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="商品名称" name="name">
-            <a-input v-model:value="editFrom.name" placeholder="请输入商品名称" />
+            <a-input v-model:value.trim="editFrom.name" placeholder="请输入商品名称" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="商品品牌" name="brand">
-            <a-input v-model:value="editFrom.brand" placeholder="请输入商品品牌" />
+            <a-input v-model:value.trim="editFrom.brand" placeholder="请输入商品品牌" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="商品型号" name="type">
-            <a-input v-model:value="editFrom.type" placeholder="请输入商品名称" />
+            <a-input v-model:value.trim="editFrom.type" placeholder="请输入商品名称" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="进货时间" name="purchase_time">
             <a-date-picker
               v-model:value="editFrom.purchase_time"
+              show-time
               value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="请选择进货时间"
             />
@@ -42,22 +43,22 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="供货商" name="merchant">
-            <a-input v-model:value="editFrom.merchant" placeholder="请输入商品名称" />
+            <a-input v-model:value.trim="editFrom.merchant" placeholder="请输入商品名称" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="进价" name="price">
-            <a-input v-model:value="editFrom.price" placeholder="请输入进价" />
+            <a-input v-model:value.trim="editFrom.price" placeholder="请输入进价" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="售价" name="sell_price">
-            <a-input v-model:value="editFrom.sell_price" placeholder="请输入售价" />
+            <a-input v-model:value.trim="editFrom.sell_price" placeholder="请输入售价" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item label="备注" name="remark" :label-col="{ span: 3 }">
-            <a-textarea v-model:value="editFrom.remark" placeholder="请输入备注信息" />
+            <a-textarea v-model:value.trim="editFrom.remark" placeholder="请输入备注信息" />
           </a-form-item>
         </a-col>
       </a-row>
