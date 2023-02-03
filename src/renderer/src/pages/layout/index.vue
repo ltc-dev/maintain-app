@@ -99,18 +99,29 @@ getLock()
 
 const lockModalOk = () => {
   const { openLock, password = '' } = lockModal
-  if (!password) {
-    return message.error('请输入密码才能开启系统锁！！！')
+  if (openLock) {
+    if (!password) {
+      return message.error('请输入密码才能开启系统锁！！！')
+    } else {
+      window.api.store({
+        type: 'set',
+        key: 'lock',
+        value: {
+          openLock,
+          password
+        }
+      })
+      router.push('/lock')
+    }
   } else {
     window.api.store({
       type: 'set',
       key: 'lock',
       value: {
         openLock,
-        password
+        password: ''
       }
     })
-    router.push('/lock')
   }
   lockModal.visible = false
 }
