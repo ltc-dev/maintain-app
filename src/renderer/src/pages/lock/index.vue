@@ -1,6 +1,9 @@
 <template>
   <div class="lock">
     <div class="center-box">
+      <div class="lock-img">
+        <img src="../../assets/lock.svg" alt="" />
+      </div>
       <div class="row">
         <a-input-password
           v-model:value.trim="password"
@@ -47,6 +50,11 @@ const submit = async () => {
   justify-content: center;
   align-items: center;
   .center-box {
+    padding-bottom: 80px;
+    .lock-img {
+      width: 320px;
+      margin-bottom: 32px;
+    }
     .row {
       margin-bottom: 20px;
     }

@@ -5,7 +5,7 @@ export default (callBack = () => {}) => {
   const win = new BrowserWindow({
     show: false,
     frame: false,
-    width: 500,
+    width: 200,
     height: 200,
     resizable: false,
     transparent: true
