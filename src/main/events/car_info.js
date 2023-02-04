@@ -1,14 +1,10 @@
 import { ipcMain } from 'electron'
-import {
-  getCarInfoList,
-  carInfoInsert,
-  carInfoDel,
-  carInfoUpdate,
-  carInfoGetOne,
-  getByCarno
-} from '../db/car_info'
+import carInfoTable from '../db/car_info'
 
-export default () => {
+export default (db) => {
+  const { getCarInfoList, carInfoInsert, carInfoDel, carInfoUpdate, carInfoGetOne, getByCarno } =
+    carInfoTable(db)
+
   ipcMain.handle('car_info', async (event, args) => {
     const { type, params } = args
     let result = {

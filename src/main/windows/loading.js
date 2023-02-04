@@ -38,7 +38,7 @@ export default (callBack = () => {}) => {
     }
   ])
   Menu.setApplicationMenu(menu)
-  win.once('show', callBack)
+  win.once('show', () => callBack(win))
   win.loadFile(join(__dirname, '../../resources/loading.html'))
   win.show()
   return win

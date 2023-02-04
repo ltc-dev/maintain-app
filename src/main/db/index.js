@@ -1,38 +1,62 @@
 import Database from 'better-sqlite3'
-import { app, dialog } from 'electron'
+import { dialog, app } from 'electron'
 import { join } from 'path'
 import fs from 'fs'
 
-import { createCarUsersTable } from './car_info'
-import { createGoodsTable } from './goods'
-import { createMaintainTable } from './maintain'
+import stroe from '../store'
 
-function initDB() {
-  try {
-    let filePath = join(app.getPath('userData'), './local_db/')
-    if (!fs.existsSync(filePath)) {
-      console.log(filePath)
-      fs.mkdir(filePath, (err) => {
-        if (err) throw err
-      })
-    }
+import carUsersTable from './car_info'
+import goodsTable from './goods'
+import maintainTable from './maintain'
 
-    const db = new Database(join(filePath, './data.db'), {
-      verbose: console.log
+export async function setupDBPath() {
+  let dbPath = stroe.get('dbPath')
+  if (!dbPath) {
+    dialog.showMessageBoxSync({
+      message: '首次使用请选择数据库存放位置',
+      type: 'info'
     })
-    return db
-  } catch (error) {
-    console.error(error)
-    dialog.showErrorBox('系统错误', String(error))
+    const result = await dialog.showOpenDialog({
+      title: '请选择数据库存放位置',
+      properties: ['openDirectory']
+    })
+    if (!result.canceled) {
+      dbPath = join(result.filePaths[0], 'local_db')
+      stroe.set('dbPath', dbPath)
+    } else {
+      throw '获取数据库路径失败！！！'
+    }
+  }
+  return dbPath
+}
+
+function initTable(db) {
+  if (db) {
+    carUsersTable(db).createCarUsersTable()
+    goodsTable(db).createGoodsTable()
+    maintainTable(db).createMaintainTable()
   }
 }
 
-const db = initDB()
-
-export function initTable() {
-  createCarUsersTable(db)
-  createGoodsTable(db)
-  createMaintainTable(db)
+export default async function initDB() {
+  try {
+    let filePath = await setupDBPath()
+    if (filePath) {
+      if (!fs.existsSync(filePath)) {
+        console.log(filePath)
+        fs.mkdir(filePath, (err) => {
+          if (err) throw err
+        })
+      }
+      const db = new Database(join(filePath, './data.db'), {
+        verbose: console.log
+      })
+      initTable(db)
+      return db
+    }
+  } catch (error) {
+    console.error(error)
+    await dialog.showErrorBox('系统错误', String(error))
+    app.quit()
+  }
 }
-
-export default db

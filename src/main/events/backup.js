@@ -1,7 +1,9 @@
-import { ipcMain, dialog, app } from 'electron'
+import { ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import fs from 'fs'
 import moment from 'moment'
+
+import { setupDBPath } from '../db/index'
 
 function copyFiles(srcDir, destDir) {
   //读取源文件地址的所有文件和文件格式
@@ -39,7 +41,7 @@ export default () => {
         properties: ['openDirectory']
       })
       if (!result.canceled) {
-        let srcDir = join(app.getPath('userData'), './data')
+        let srcDir = await setupDBPath()
         let dirDate = moment().format('YYYY_MM_DD')
         let destDir = join(result.filePaths[0], dirDate)
         console.log(destDir)

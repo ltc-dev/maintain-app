@@ -1,14 +1,9 @@
 import { ipcMain } from 'electron'
-import {
-  getGoodsList,
-  goodsInsert,
-  goodsDel,
-  goodsUpdate,
-  goodsGetOne,
-  getListByCarId
-} from '../db/goods'
+import goodsTable from '../db/goods'
 
-export default () => {
+export default (db) => {
+  const { getGoodsList, goodsInsert, goodsDel, goodsUpdate, goodsGetOne, getListByCarId } =
+    goodsTable(db)
   ipcMain.handle('goods', async (event, args) => {
     const { type, params } = args
     let result = {

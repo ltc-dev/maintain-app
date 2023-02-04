@@ -50,8 +50,21 @@
         />
       </div>
       <div class="modal-row">
-        <div class="label">数据备份：</div>
-        <a-button type="primary" :loading="backupLoading" @click="backupClick">备份</a-button>
+        <div class="label">数据库地址：</div>
+        <div style="margin-right: 10px">{{ dbPath }}</div>
+      </div>
+      <div class="modal-row">
+        <div class="label">数据库操作：</div>
+        <a-button
+          type="primary"
+          style="margin-right: 12px"
+          :loading="backupLoading"
+          @click="backupClick"
+          >备份数据库</a-button
+        >
+        <a-button type="danger" ghost :loading="backupLoading" @click="dbSwitchClick"
+          >切换数据库</a-button
+        >
       </div>
     </a-modal>
   </div>
@@ -70,6 +83,7 @@ const router = useRouter()
 const route = useRoute()
 const activeTab = ref(0)
 const backupLoading = ref(false)
+const dbPath = ref('')
 
 const tabChange = (tab) => {
   router.push(tab.path)
@@ -90,6 +104,7 @@ const lockModal = reactive({
   openLock: false,
   password: ''
 })
+
 const getLock = async () => {
   const lock = await window.api.store({ type: 'get', key: 'lock' })
   lockModal.openLock = lock.openLock
@@ -130,6 +145,7 @@ const setModalClose = () => {
   getLock()
 }
 const setLock = () => {
+  getDbPath()
   lockModal.visible = true
 }
 const lockClick = () => {
@@ -138,15 +154,32 @@ const lockClick = () => {
 }
 const backupClick = async () => {
   backupLoading.value = true
-  const res = await window.api.backup()
+  const res = await window.api.db.backup()
   backupLoading.value = false
   if (res) {
     Modal.success({
-      title: `备份成功，备份数据路径：${res}`
+      title: `备份成功，备份数据路径：${res}`,
+      onOk: () => {
+        lockModal.visible = false
+      }
     })
   }
 }
 watch(() => route.path, activeTabChage)
+
+const getDbPath = async () => {
+  const path = await window.api.store({ type: 'get', key: 'dbPath' })
+  dbPath.value = path
+}
+
+const dbSwitchClick = () => {
+  Modal.confirm({
+    title: '确定要切换数据库吗？',
+    onOk: async () => {
+      window.api.db.switch()
+    }
+  })
+}
 </script>
 
 <style lang="less" scoped>

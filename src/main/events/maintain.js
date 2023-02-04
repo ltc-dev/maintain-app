@@ -1,14 +1,15 @@
 import { ipcMain } from 'electron'
-import {
-  getMaintainList,
-  maintainInsert,
-  maintainGetOne,
-  maintainUpdate,
-  maintainDel,
-  getListByCarId
-} from '../db/maintain'
+import maintainTable from '../db/maintain'
 
-export default () => {
+export default (db) => {
+  const {
+    getMaintainList,
+    maintainInsert,
+    maintainGetOne,
+    maintainUpdate,
+    maintainDel,
+    getListByCarId
+  } = maintainTable(db)
   ipcMain.handle('maintain', async (event, args) => {
     const { type, params } = args
     let result = {

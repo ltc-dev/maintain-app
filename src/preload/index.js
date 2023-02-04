@@ -42,19 +42,24 @@ let goods = {
     return ipcRenderer.invoke('goods', { type: 'getAllByCarId', params })
   }
 }
-const backup = () => {
-  return ipcRenderer.invoke('backup')
-}
+
 const store = (params) => {
   return ipcRenderer.invoke('store', params)
 }
-
+const db = {
+  backup() {
+    return ipcRenderer.invoke('backup')
+  },
+  switch() {
+    return ipcRenderer.invoke('db', { type: 'switch' })
+  }
+}
 // Custom APIs for renderer
 const api = {
   carInfo,
   maintain,
   goods,
-  backup,
+  db,
   store
 }
 
