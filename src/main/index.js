@@ -6,8 +6,6 @@ import createLoadingWindow from './windows/loading'
 
 import initDB from './db'
 
-// import insertData from './insertData'
-
 import setupEvents from './events'
 
 app.whenReady().then(async () => {

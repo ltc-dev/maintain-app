@@ -44,6 +44,7 @@
           </template>
           <a-table
             :columns="columns"
+            bordered
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"

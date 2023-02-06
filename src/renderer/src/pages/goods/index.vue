@@ -39,6 +39,7 @@
     <a-table
       :columns="columns"
       :data-source="dataSource"
+      bordered
       :pagination="pagination"
       :loading="loading"
       :scroll="{ x: 800 }"
@@ -117,7 +118,7 @@ const columns = [
     title: '操作',
     key: 'action',
     fixed: 'right',
-    width: 100,
+    width: 216,
     scopedSlots: { customRender: 'action' }
   }
 ]

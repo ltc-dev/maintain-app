@@ -2,6 +2,7 @@
   <a-table
     :columns="columns"
     :data-source="dataSource"
+    bordered
     :pagination="pagination"
     :loading="loading"
     size="small"

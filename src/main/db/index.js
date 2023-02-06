@@ -9,6 +9,8 @@ import carUsersTable from './car_info'
 import goodsTable from './goods'
 import maintainTable from './maintain'
 
+import insertData from './insertData'
+
 export async function setupDBPath() {
   let dbPath = stroe.get('dbPath')
   if (!dbPath) {
@@ -35,6 +37,7 @@ function initTable(db) {
     carUsersTable(db).createCarUsersTable()
     goodsTable(db).createGoodsTable()
     maintainTable(db).createMaintainTable()
+    insertData(db)
   }
 }
 

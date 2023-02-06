@@ -34,6 +34,7 @@
       :columns="columns"
       :data-source="dataSource"
       :pagination="pagination"
+      bordered
       :loading="loading"
       :scroll="{ x: 800 }"
       @change="pageChange"

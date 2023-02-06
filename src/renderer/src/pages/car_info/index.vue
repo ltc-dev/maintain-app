@@ -63,6 +63,7 @@
       :pagination="pagination"
       :loading="loading"
       :scroll="{ x: 800 }"
+      bordered
       @change="pageChange"
     >
       <template #bodyCell="{ column, record }">
@@ -101,7 +102,7 @@ const pagination = reactive({
   showSizeChanger: false
 })
 const columns = [
-  { title: '编号', dataIndex: 'id', width: 60 },
+  { title: '编号', dataIndex: 'id', width: 68 },
   {
     title: '车主',
     dataIndex: 'name'
@@ -134,7 +135,7 @@ const columns = [
     title: '操作',
     key: 'action',
     fixed: 'right',
-    width: 200,
+    width: 216,
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -186,17 +187,42 @@ const delClick = (row) => {
   Modal.confirm({
     title: '确定要删除吗？',
     onOk: async () => {
-      loading.value = true
-      const { code, data, msg } = await window.api.carInfo.del({ id: row.id })
-      loading.value = false
-      if (code == 200) {
-        console.log(data)
-        getList()
+      let flag = await getCorrelInfo(row.id)
+      if (flag) {
+        loading.value = true
+        const { code, data, msg } = await window.api.carInfo.del({ id: row.id })
+        loading.value = false
+        if (code == 200) {
+          console.log(data)
+          getList()
+        } else {
+          message.error(msg)
+        }
       } else {
-        message.error(msg)
+        Modal.warn({
+          title: '请先删除当前车辆下相关联的保养记录或商品记录'
+        })
       }
     }
   })
+}
+
+const getCorrelInfo = async (id) => {
+  loading.value = true
+  const maintainInfo = await window.api.maintain.getAllByCarId({
+    car_id: id
+  })
+  const goodsInfo = await window.api.goods.getAllByCarId({
+    car_id: id
+  })
+  loading.value = false
+  if (
+    (maintainInfo.data && maintainInfo.data.length) ||
+    (goodsInfo.data && goodsInfo.data.length)
+  ) {
+    return false
+  }
+  return true
 }
 const detailClick = (row) => {
   router.push({
