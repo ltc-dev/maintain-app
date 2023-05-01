@@ -19,6 +19,14 @@
         ></a-input>
       </div>
       <div class="search-item">
+        <div class="label">车辆型号：</div>
+        <a-input
+          v-model:value.trim="searchForm.car_brand_type"
+          allow-clear
+          placeholder="请输入车辆型号"
+        ></a-input>
+      </div>
+      <div class="search-item">
         <div class="label">车主：</div>
         <a-input
           v-model:value.trim="searchForm.name"
@@ -104,17 +112,27 @@ const pagination = reactive({
 const columns = [
   { title: '编号', dataIndex: 'id', width: 68 },
   {
-    title: '车主',
-    dataIndex: 'name'
-  },
-  {
     title: '车牌号',
     dataIndex: 'car_no',
     minWidth: 120
   },
+  // {
+  //   title: '车主',
+  //   dataIndex: 'name'
+  // },
   {
     title: '车辆型号',
     dataIndex: 'car_brand_type',
+    minWidth: 120
+  },
+  {
+    title: '出厂年份',
+    dataIndex: 'production_year',
+    minWidth: 120
+  },
+  {
+    title: '排量',
+    dataIndex: 'displacement',
     minWidth: 120
   },
   {
@@ -122,10 +140,10 @@ const columns = [
     dataIndex: 'phone',
     minWidth: 132
   },
-  {
-    title: '轮胎型号',
-    dataIndex: 'tyre_type'
-  },
+  // {
+  //   title: '轮胎型号',
+  //   dataIndex: 'tyre_type'
+  // },
   {
     title: '更新时间',
     dataIndex: 'update_time',
@@ -135,7 +153,7 @@ const columns = [
     title: '操作',
     key: 'action',
     fixed: 'right',
-    width: 216,
+    width: 240,
     scopedSlots: { customRender: 'action' }
   }
 ]

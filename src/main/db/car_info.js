@@ -12,6 +12,10 @@ export default (db) => {
           phone TEXT, --电话号码
           address TEXT, --地址
           car_no TEXT, --车牌号码
+          production_year TEXT, --出厂年份
+          displacement TEXT, --排量
+          capacity TEXT, --机油容量
+          filter_type TEXT, --机滤型号
           car_color TEXT, --车辆颜色
           car_brand_type TEXT, --车辆品牌及型号
           tyre_type TEXT, --轮胎型号

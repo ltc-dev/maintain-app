@@ -17,6 +17,18 @@
           <a-descriptions-item label="车辆型号">{{
             baseInfo.car_brand_type || '--'
           }}</a-descriptions-item>
+          <a-descriptions-item label="出厂年份"
+            >{{ baseInfo.production_year || '--' }} 年</a-descriptions-item
+          >
+          <a-descriptions-item label="排量"
+            >{{ baseInfo.displacement || '--' }} T</a-descriptions-item
+          >
+          <a-descriptions-item label="机油容量"
+            >{{ baseInfo.capacity || '--' }} L</a-descriptions-item
+          >
+          <a-descriptions-item label="机滤型号">{{
+            baseInfo.filter_type || '--'
+          }}</a-descriptions-item>
           <a-descriptions-item label="车辆颜色">
             {{ baseInfo.car_color || '--' }}
           </a-descriptions-item>

@@ -30,13 +30,45 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="轮胎型号" name="tyre_type">
-            <a-input v-model:value.trim="editFrom.tyre_type" placeholder="请输入轮胎型号" />
+          <a-form-item label="车辆型号" name="car_brand_type">
+            <a-input v-model:value.trim="editFrom.car_brand_type" placeholder="请输入车辆型号" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="车辆型号" name="car_brand_type">
-            <a-input v-model:value.trim="editFrom.car_brand_type" placeholder="请输入车辆型号" />
+          <a-form-item label="出厂年份" name="production_year">
+            <a-input
+              v-model:value.trim="editFrom.production_year"
+              placeholder="请输入出厂年份"
+              suffix="年"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="排量" name="displacement">
+            <a-input
+              v-model:value.trim="editFrom.displacement"
+              suffix="T"
+              placeholder="请输入排量"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="机油容量" name="capacity">
+            <a-input
+              v-model:value.trim="editFrom.capacity"
+              suffix="L"
+              placeholder="请输入机油容量"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="机滤型号" name="filter_type">
+            <a-input v-model:value.trim="editFrom.filter_type" placeholder="请输入机滤型号" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label="轮胎型号" name="tyre_type">
+            <a-input v-model:value.trim="editFrom.tyre_type" placeholder="请输入轮胎型号" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -51,7 +83,7 @@
         </a-col>
         <a-col :span="24">
           <a-form-item label="备注" name="remark" :label-col="{ span: 3 }">
-            <a-textarea v-model:value.trim="editFrom.remark" placeholder="请输入备注" />
+            <a-textarea v-model:value="editFrom.remark" placeholder="请输入备注" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -73,6 +105,8 @@ const editFrom = ref({
   tyre_type: '',
   car_color: '',
   car_brand_type: '',
+  production_year: '',
+  displacement: '',
   remark: ''
 })
 const emit = defineEmits(['update:visible', 'success', 'cancel'])
