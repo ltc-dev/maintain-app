@@ -1,6 +1,10 @@
 # maintain-app
 
-An Electron application with Vue
+使用 Vue 的 Electron 应用程序，
+用到的技术栈有：
+  - pinain 状态管理
+  - sqlite3 本地持久化存储数据库
+  - electron-store 轻量级本地持久化存储
 
 ## Recommended IDE Setup
 
